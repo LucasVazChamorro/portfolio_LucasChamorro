@@ -1,114 +1,201 @@
 @import "mapas.less";
+
+// Breakpoints
 @breakpointMobile: ~"(max-width: 767px)";
 @breakpointTablet: ~"(min-width: 768px) and (max-width: 1023px)";
+@breakpointDesktop: ~"(min-width: 1024px)";
+@breakpointVerySmall: ~"(max-width: 374px)"; // Novo breakpoint para dispositivos muito pequenos
 
-.marginBottom8 {
-    margin-bottom: 8px;
+// Mixins para facilitar a aplicação de estilos responsivos
+.responsive-font-size(@desktop, @tablet, @mobile, @verySmall) {
+    font-size: @desktop;
+    
+    @media @breakpointTablet {
+        font-size: @tablet;
+    }
+    
+    @media @breakpointMobile {
+        font-size: @mobile;
+    }
+
+    @media @breakpointVerySmall {
+        font-size: @verySmall;
+    }
 }
 
+.responsive-padding(@desktop, @tablet, @mobile, @verySmall) {
+    padding: @desktop;
+    
+    @media @breakpointTablet {
+        padding: @tablet;
+    }
+    
+    @media @breakpointMobile {
+        padding: @mobile;
+    }
+
+    @media @breakpointVerySmall {
+        padding: @verySmall;
+    }
+}
+
+// Estilos gerais
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', 'sans-serif';
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
-    background-color: #colors[backgroundColor];
-    color: #colors[textColor];
+    background-color: @backgroundColor;
+    color: @textColor;
+    line-height: 1.6;
 }
 
-li {
-    list-style: none;
-}
-
+// Container principal
 .container {
     max-width: 960px;
     width: 100%;
     margin: 0 auto;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    .responsive-padding(40px, 30px, 20px, 15px);
 
     @media @breakpointTablet {
-        max-width: 80%;
-        max-height: 80%;
+        max-width: 90%;
     }
 
     @media @breakpointMobile {
-        max-width: 70%;
-        max-height: 70%;
+        max-width: 95%;
+    }
+
+    @media @breakpointVerySmall {
+        max-width: 100%;
+        padding: 15px;
     }
 }
 
+// Cabeçalho e avatar
 header {
-    padding-bottom: 18px;
-    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 30px;
 
     .profile-avatar {
-        display: block;
-        margin: 2 auto 24px;
+        width: 96px;
+        height: 96px;
         border-radius: 50%;
+        margin: 0 auto 20px;
+        display: block;
+
+        @media @breakpointMobile {
+            width: 80px;
+            height: 80px;
+        }
+
+        @media @breakpointVerySmall {
+            width: 70px;
+            height: 70px;
+        }
     }
 }
 
-.profile-bio{
+// Biografia
+.profile-bio {
     text-align: center;
-
+    margin-bottom: 30px;
 
     &-name {
-        font-size: 16px;
-        .marginBottom8();
+        .responsive-font-size(24px, 22px, 20px, 18px);
+        margin-bottom: 10px;
     }
-    &-subtitle {
-        font-size: 14px;
-        .marginBottom8();
-    }
-    &-description {
-        font-size: 14px;
-        opacity: .7;
+
+    p {
+        .responsive-font-size(16px, 15px, 14px, 13px);
+        max-width: 600px;
+        margin: 0 auto;
+
+        @media @breakpointMobile {
+            max-width: 100%;
+        }
     }
 }
 
+// Links sociais
 .social-links {
     display: flex;
-    justify-content: space-between;
-    max-width: 240px;
-    width: 100%;
-    margin: 0 auto;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
 
     li {
         img {
-            transition: all ease .3s;
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+
             &:hover {
-                transform: scale(1.3);
+                transform: scale(1.2);
+            }
+
+            @media @breakpointVerySmall {
+                width: 28px;
+                height: 28px;
             }
         }
-
     }
 }
 
+// Lista de projetos
 .projects-list {
-    margin-top: 32px;
     &-item {
+        margin-bottom: 15px;
+
         a {
-            text-decoration: none;
-            background-color: #colors[buttonColor];
             display: block;
-            padding: 16px 20px;
-            margin-bottom: 16px;
-            text-align: center;
-            color: #colors[textColor];
-            font-weight: bold;
+            background-color: @buttonColor;
+            color: @textColor;
+            text-decoration: none;
+            padding: 15px 20px;
             border-radius: 30px;
-            border: 2px solid #colors[buttonColor];
-            transition: all ease 0.5s;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            .responsive-font-size(16px, 15px, 14px, 13px);
 
             &:hover {
-                color: #colors[buttonColor];
-                background-color: transparent;
+                background-color: darken(@buttonColor, 10%);
+                transform: translateY(-3px);
+            }
+
+            @media @breakpointMobile {
+                padding: 12px 15px;
+            }
+
+            @media @breakpointVerySmall {
+                padding: 10px 12px;
+                border-radius: 20px;
             }
         }
+    }
+}
+
+// Media queries adicionais para ajustes finos
+@media @breakpointMobile {
+    .profile-bio p {
+        padding: 0 15px;
+    }
+}
+
+@media @breakpointVerySmall {
+    .profile-bio p {
+        padding: 0 10px;
+    }
+
+    .projects-list-item {
+        margin-bottom: 10px;
     }
 }
